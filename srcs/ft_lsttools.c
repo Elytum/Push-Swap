@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_lst			*ft_newlst(int v)
+static	t_lst	*ft_newlst(int v)
 {
 	t_lst		*ptr;
 
@@ -44,8 +44,8 @@ void			ft_pushback(t_lst **head, int v)
 	}
 }
 
-void			ft_get_before_highest(t_lst **l, t_lst **before_highest,
-										int *pos)
+static	void	ft_get_before_highest(t_lst **l, t_lst 
+										**before_highest, int *pos)
 {
 	int			i;
 	int			value;
@@ -74,7 +74,6 @@ int				ft_highest(t_lst **l)
 	t_lst		*before_highest;
 	t_lst		*ptr;
 	int			pos;
-	int			value;
 
 	ft_get_before_highest(l, &before_highest, &pos);
 	if (before_highest)

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push-swap.h                                        :+:      :+:    :+:   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,12 +13,19 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include "libft/libft.h"
+# include "../libft/libft.h"
+
 typedef struct		s_lst
 {
 	int				value;
 	struct s_lst	*next;
 	struct s_lst	*past;
 }					t_lst;
+
+int				ft_isnum(char *str);
+int				ft_put_return(char *str, int val);
+void			ft_putstrloop(char *str, size_t times);
+int				ft_highest(t_lst **l);
+void			ft_pushback(t_lst **head, int v);
 
 #endif

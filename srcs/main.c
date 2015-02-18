@@ -30,7 +30,7 @@ void			ft_order(int a, int b, int c)
 		ft_putstr("Error\n");
 }
 
-int				ft_cases(int ac, char **av)
+static int		ft_cases(int ac, char **av)
 {
 	int			var[3];
 	int			pos;
@@ -57,7 +57,7 @@ int				ft_cases(int ac, char **av)
 	return (1);
 }
 
-void			ft_almost_finish(t_lst **la, int pos)
+static void		ft_almost_finish(t_lst **la, int pos)
 {
 	int			var[3];
 
@@ -83,7 +83,7 @@ void			ft_almost_finish(t_lst **la, int pos)
 	ft_putchar(' ');
 }
 
-void			ft_process(t_lst **la, int len)
+static void		ft_process(t_lst **la, int len)
 {
 	int			tmp;
 	int			pos;
