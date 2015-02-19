@@ -11,23 +11,24 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <unistd.h>
 
-void			ft_order(int a, int b, int c)
+static void		ft_order(int a, int b, int c)
 {
 	if (a <= b && b <= c)
 		return ;
 	else if (a >= b && b <= c && a <= c)
-		ft_putstr("sa");
+		write(1, "sa", 2);
 	else if (a <= b && b >= c && a >= c)
-		ft_putstr("rra");
+		write(1, "rra", 3);
 	else if (a >= b && b <= c && a >= c)
-		ft_putstr("ra");
+		write(1, "ra", 2);
 	else if (a >= b && b >= c && a >= c)
-		ft_putstr("ra ra");
+		write(1, "ra sa", 5);
 	else if (a <= b && b >= c && a <= c)
-		ft_putstr("rra sa");
+		write(1, "rra sa", 6);
 	else
-		ft_putstr("Error\n");
+		write(1, "Error\n", 6);
 }
 
 static int		ft_cases(int ac, char **av)
@@ -36,22 +37,22 @@ static int		ft_cases(int ac, char **av)
 	int			pos;
 
 	if (ac == 0)
-		return (ft_put_return("Error\n", -1));
+		return (write(1, "Error\n", 6));
 	if (ac == 1)
 		return (0);
 	pos = 0;
 	while (pos != ac)
 	{
 		if (!(ft_isnum(*av)))
-			return (ft_put_return("Error\n", -1));
+			return (write(1, "Error\n", 6));
 		var[pos++] = ft_atoi(*av++);
 	}
 	if (ac == 2)
 	{
 		if (var[0] > var[1])
-			return (ft_put_return("ra\n", 0));
+			return (write(1, "ra\n", 3));
 		else
-			return (ft_put_return("", 0));
+			return (0);
 	}
 	ft_order(var[0], var[1], var[2]);
 	return (1);
@@ -80,7 +81,7 @@ static void		ft_almost_finish(t_lst **la, int pos)
 		var[2] = (*la)->next->value;
 	}
 	ft_order(var[0], var[1], var[2]);
-	ft_putchar(' ');
+	write(1, " ", 1);
 }
 
 static void		ft_process(t_lst **la, int len)
@@ -91,7 +92,7 @@ static void		ft_process(t_lst **la, int len)
 	pos = 0;
 	while (len > 3)
 	{
-		tmp = ft_highest(la);
+		tmp = ft_lowest(la);
 		if (tmp > pos)
 		{
 			ft_putstrloop("ra ", tmp - pos);
@@ -102,7 +103,7 @@ static void		ft_process(t_lst **la, int len)
 			ft_putstrloop("rra ", pos - tmp);
 			pos = tmp;
 		}
-		ft_putstr("pb ");
+		write(1, "pb ", 3);
 		len--;
 		if (pos >= len)
 			pos -= len;
@@ -124,18 +125,12 @@ int				main(int ac, char **av)
 	while (*av)
 	{
 		if (!(ft_isnum(*av)))
-			return (ft_put_return("Error\n", -1));
+			return (write(1, "Error\n", 6));
 		ft_pushback(&la, ft_atoi(*av++));
 		len++;
 	}
 	ft_process(&la, len);
 	ft_putstrloop("pa ", len - 4);
-	ft_putstr("pa ");
-	if (len - 3 > 3)
-		ft_putstr("rra rra rra\n");
-	else
-	{
-		ft_putstrloop("ra ", len - 4);
-		ft_putstr("ra\n");
-	}
+	write(1, "pa ", 3);
+	return (0);
 }

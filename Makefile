@@ -12,7 +12,7 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O2 -I./includes -I ./libft/includes
+CFLAGS = -Wall -Wextra -Werror -O2 -I./includes -I
 #--------------Name-------------------------#
 NAME = Push_swap
 
@@ -32,9 +32,8 @@ BASEDIR = ./srcs
 all:$(NAME)
 
 $(NAME):
-		make re -C ./libft
 		$(CC) -c $(CFLAGS) $(addprefix $(BASEDIR)/, $(FILES))
-		$(CC) -o $(NAME) $(OBJECT) -L./libft -lft
+		$(CC) -o $(NAME) $(OBJECT) -lft
 
 clean :
 		/bin/rm -Rf $(OBJECT)

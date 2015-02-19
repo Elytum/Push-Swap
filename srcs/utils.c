@@ -11,26 +11,55 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <unistd.h>
 
 int				ft_isnum(char *str)
 {
 	while (*str)
 	{
-		if (!ft_isdigit(*str))
+		if (!(*str >= '0' && *str <= '9'))
 			return (0);
 		str++;
 	}
 	return (1);
 }
 
-int				ft_put_return(char *str, int val)
+void			ft_putstrloop(char *str, int times)
 {
-	ft_putstr(str);
-	return (val);
+	char		*ptr;
+	int			len;
+
+	ptr = str;
+	while (*ptr)
+		ptr++;
+	len = ptr - str;
+	while (times--)
+		write(1, str, len);
 }
 
-void			ft_putstrloop(char *str, size_t times)
+int				ft_atoi(const char *str)
 {
-	while (times--)
-		ft_putstr(str);
+	int	value;
+	int	sign;
+
+	sign = 1;
+	if (!str)
+		return (0);
+	while (*str == ' ' || *str == '\t' || *str == '\t' ||
+		*str == '\v' || *str == '\f' || *str == '\r')
+		str++;
+	if (str[0] == '+')
+		str++;
+	else if (str[0] == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	value = 0;
+	while (str[0] && (*str >= '0' && *str <= '9'))
+	{
+		value = value * 10 + str[0] - '0';
+		str++;
+	}
+	return (value * sign);
 }

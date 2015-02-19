@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdlib.h>
 
 static	t_lst	*ft_newlst(int v)
 {
@@ -44,8 +45,7 @@ void			ft_pushback(t_lst **head, int v)
 	}
 }
 
-static	void	ft_get_before_highest(t_lst **l, t_lst 
-										**before_highest, int *pos)
+static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos)
 {
 	int			i;
 	int			value;
@@ -53,15 +53,15 @@ static	void	ft_get_before_highest(t_lst **l, t_lst
 
 	ptr = *l;
 	value = ptr->value;
-	*before_highest = NULL;
+	*bl = NULL;
 	i = 0;
 	*pos = i;
 	while (ptr->next)
 	{
-		if (ptr->next->value > value)
+		if (ptr->next->value < value)
 		{
 			value = ptr->next->value;
-			*before_highest = ptr;
+			*bl = ptr;
 			*pos = i + 1;
 		}
 		ptr = ptr->next;
@@ -69,17 +69,17 @@ static	void	ft_get_before_highest(t_lst **l, t_lst
 	}
 }
 
-int				ft_highest(t_lst **l)
+int				ft_lowest(t_lst **l)
 {
-	t_lst		*before_highest;
+	t_lst		*before_lowest;
 	t_lst		*ptr;
 	int			pos;
 
-	ft_get_before_highest(l, &before_highest, &pos);
-	if (before_highest)
+	ft_get_before_lowest(l, &before_lowest, &pos);
+	if (before_lowest)
 	{
-		ptr = before_highest->next;
-		before_highest->next = ptr->next;
+		ptr = before_lowest->next;
+		before_lowest->next = ptr->next;
 	}
 	else
 	{

@@ -13,8 +13,6 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "../libft/libft.h"
-
 typedef struct		s_lst
 {
 	int				value;
@@ -24,8 +22,8 @@ typedef struct		s_lst
 
 int				ft_isnum(char *str);
 int				ft_put_return(char *str, int val);
-void			ft_putstrloop(char *str, size_t times);
-int				ft_highest(t_lst **l);
+void			ft_putstrloop(char *str, int times);
+int				ft_lowest(t_lst **l);
 void			ft_pushback(t_lst **head, int v);
-
+int				ft_atoi(const char *str);
 #endif
