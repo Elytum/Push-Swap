@@ -21,7 +21,6 @@ static	t_lst	*ft_newlst(int v)
 		return (NULL);
 	ptr->value = v;
 	ptr->next = NULL;
-	ptr->past = NULL;
 	return (ptr);
 }
 
@@ -41,7 +40,6 @@ void			ft_pushback(t_lst **head, int v)
 		while (ptr->next)
 			ptr = ptr->next;
 		ptr->next = tmp;
-		tmp->past = ptr;
 	}
 }
 

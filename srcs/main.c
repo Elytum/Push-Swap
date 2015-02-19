@@ -131,6 +131,6 @@ int				main(int ac, char **av)
 	}
 	ft_process(&la, len);
 	ft_putstrloop("pa ", len - 4);
-	write(1, "pa ", 3);
+	write(1, "pa", 2);
 	return (0);
 }

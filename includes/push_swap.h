@@ -17,7 +17,6 @@ typedef struct		s_lst
 {
 	int				value;
 	struct s_lst	*next;
-	struct s_lst	*past;
 }					t_lst;
 
 int				ft_isnum(char *str);

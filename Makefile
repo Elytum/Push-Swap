@@ -12,13 +12,13 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O2 -I./includes -I
+CFLAGS = -Wall -Wextra -Werror -I./includes
 #--------------Name-------------------------#
 NAME = Push_swap
 
 #--------------Sources----------------------#
-FILES =	main.c	\
-		ft_lsttools.c \
+FILES =	main.c			\
+		ft_lsttools.c	\
 		utils.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
@@ -33,7 +33,7 @@ all:$(NAME)
 
 $(NAME):
 		$(CC) -c $(CFLAGS) $(addprefix $(BASEDIR)/, $(FILES))
-		$(CC) -o $(NAME) $(OBJECT) -lft
+		$(CC) -o $(NAME) $(OBJECT)
 
 clean :
 		/bin/rm -Rf $(OBJECT)
