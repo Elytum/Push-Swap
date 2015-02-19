@@ -95,14 +95,19 @@ static void		ft_process(t_lst **la, int len)
 		tmp = ft_lowest(la);
 		if (tmp > pos)
 		{
-			ft_putstrloop("ra ", tmp - pos);
-			pos = tmp;
+			if (tmp - pos < len - tmp + pos)
+				ft_putstrloop("ra ", tmp - pos);
+			else
+				ft_putstrloop("rra ", len - tmp + pos);
 		}
 		else
 		{
-			ft_putstrloop("rra ", pos - tmp);
-			pos = tmp;
+			if (pos - tmp < len - pos + tmp)
+				ft_putstrloop("rra ", pos - tmp);
+			else
+				ft_putstrloop("ra ", len - pos + tmp);
 		}
+		pos = tmp;
 		write(1, "pb ", 3);
 		len--;
 		if (pos >= len)
