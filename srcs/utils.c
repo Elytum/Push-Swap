@@ -13,13 +13,23 @@
 #include "push_swap.h"
 #include <unistd.h>
 
+int				ft_abs(int v)
+{
+	return ((v < 0) ? -v : v);
+}
+
 int				ft_isnum(char *str)
 {
-	while (*str)
+	char		*ptr;
+
+	ptr = str;
+	if (*ptr == '-' || *ptr == '+')
+		ptr++;
+	while (*ptr)
 	{
-		if (!(*str >= '0' && *str <= '9'))
+		if (!(*ptr >= '0' && *ptr <= '9'))
 			return (0);
-		str++;
+		ptr++;
 	}
 	return (1);
 }

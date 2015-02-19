@@ -22,7 +22,8 @@ typedef struct		s_lst
 int				ft_isnum(char *str);
 int				ft_put_return(char *str, int val);
 void			ft_putstrloop(char *str, int times);
-int				ft_lowest(t_lst **l);
+int				ft_lowest(t_lst **l, int here);
 void			ft_pushback(t_lst **head, int v);
 int				ft_atoi(const char *str);
+int				ft_abs(int v);
 #endif

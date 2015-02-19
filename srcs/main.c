@@ -84,7 +84,7 @@ static void		ft_almost_finish(t_lst **la, int pos)
 	write(1, " ", 1);
 }
 
-static void		ft_process(t_lst **la, int len)
+static void		ft_process(t_lst **la, int len, int a, int b)
 {
 	int			tmp;
 	int			pos;
@@ -92,21 +92,17 @@ static void		ft_process(t_lst **la, int len)
 	pos = 0;
 	while (len > 3)
 	{
-		tmp = ft_lowest(la);
+		tmp = ft_lowest(la, pos);
 		if (tmp > pos)
-		{
-			if (tmp - pos < len - tmp + pos)
-				ft_putstrloop("ra ", tmp - pos);
+			if ((a = (tmp - pos)) < (b = (len - tmp + pos)))
+				ft_putstrloop("ra ", a);
 			else
-				ft_putstrloop("rra ", len - tmp + pos);
-		}
+				ft_putstrloop("rra ", b);
 		else
-		{
-			if (pos - tmp < len - pos + tmp)
-				ft_putstrloop("rra ", pos - tmp);
+			if ((a = (pos - tmp)) < (b = (len - pos + tmp)))
+				ft_putstrloop("rra ", a);
 			else
-				ft_putstrloop("ra ", len - pos + tmp);
-		}
+				ft_putstrloop("ra ", b);
 		pos = tmp;
 		write(1, "pb ", 3);
 		len--;
@@ -134,7 +130,7 @@ int				main(int ac, char **av)
 		ft_pushback(&la, ft_atoi(*av++));
 		len++;
 	}
-	ft_process(&la, len);
+	ft_process(&la, len, 0, 0);
 	ft_putstrloop("pa ", len - 4);
 	write(1, "pa", 2);
 	return (0);

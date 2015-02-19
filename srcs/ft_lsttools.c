@@ -43,7 +43,7 @@ void			ft_pushback(t_lst **head, int v)
 	}
 }
 
-static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos)
+static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
 {
 	int			i;
 	int			value;
@@ -56,7 +56,8 @@ static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos)
 	*pos = i;
 	while (ptr->next)
 	{
-		if (ptr->next->value < value)
+		if (ptr->next->value < value || (ptr->next->value == value &&
+			(ft_abs(here - i - 1) < ft_abs(*pos - here))))
 		{
 			value = ptr->next->value;
 			*bl = ptr;
@@ -67,13 +68,13 @@ static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos)
 	}
 }
 
-int				ft_lowest(t_lst **l)
+int				ft_lowest(t_lst **l, int here)
 {
 	t_lst		*before_lowest;
 	t_lst		*ptr;
 	int			pos;
 
-	ft_get_before_lowest(l, &before_lowest, &pos);
+	ft_get_before_lowest(l, &before_lowest, &pos, here);
 	if (before_lowest)
 	{
 		ptr = before_lowest->next;
