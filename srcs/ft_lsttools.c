@@ -12,6 +12,7 @@
 
 #include "push_swap.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static	t_lst	*ft_newlst(int v)
 {
@@ -41,6 +42,11 @@ void			ft_pushback(t_lst **head, int v)
 			ptr = ptr->next;
 		ptr->next = tmp;
 	}
+}
+
+static int		ft_abs(int v)
+{
+	return ((v < 0) ? -v : v);
 }
 
 static	void	ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)

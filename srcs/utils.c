@@ -13,9 +13,37 @@
 #include "push_swap.h"
 #include <unistd.h>
 
-int				ft_abs(int v)
+int				ft_order(int a, int b, int c)
 {
-	return ((v < 0) ? -v : v);
+	if (a <= b && b <= c)
+		return (0);
+	else if (a >= b && b <= c && a <= c)
+		return (write(1, "sa", 2));
+	else if (a <= b && b >= c && a >= c)
+		return (write(1, "rra", 3));
+	else if (a >= b && b <= c && a >= c)
+		return (write(1, "ra", 2));
+	else if (a >= b && b >= c && a >= c)
+		return (write(1, "ra sa", 5));
+	else if (a <= b && b >= c && a <= c)
+		return (write(1, "rra sa", 6));
+	return (write(1, "Error", 5));
+}
+
+int				ft_ordered(t_lst *head)
+{
+	t_lst		*ptr;
+
+	if (!head)
+		return (-1);
+	ptr = head;
+	while (ptr->next)
+	{
+		if (ptr->value > ptr->next->value)
+			return (0);
+		ptr = ptr->next;
+	}
+	return (1);
 }
 
 int				ft_isnum(char *str)
@@ -34,15 +62,8 @@ int				ft_isnum(char *str)
 	return (1);
 }
 
-void			ft_putstrloop(char *str, int times)
+void			ft_putstrloop(char *str, int times, int len)
 {
-	char		*ptr;
-	int			len;
-
-	ptr = str;
-	while (*ptr)
-		ptr++;
-	len = ptr - str;
 	while (times--)
 		write(1, str, len);
 }

@@ -19,11 +19,12 @@ typedef struct		s_lst
 	struct s_lst	*next;
 }					t_lst;
 
-int				ft_isnum(char *str);
-int				ft_put_return(char *str, int val);
-void			ft_putstrloop(char *str, int times);
-int				ft_lowest(t_lst **l, int here);
-void			ft_pushback(t_lst **head, int v);
-int				ft_atoi(const char *str);
-int				ft_abs(int v);
+int					ft_isnum(char *str);
+int					ft_put_return(char *str, int val);
+void				ft_putstrloop(char *str, int times, int len);
+int					ft_lowest(t_lst **l, int here);
+void				ft_pushback(t_lst **head, int v);
+int					ft_atoi(const char *str);
+int					ft_order(int a, int b, int c);
+int					ft_ordered(t_lst *head);
 #endif

@@ -12,7 +12,7 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes
+CFLAGS = -Wall -Wextra -Werror -I./includes -O2
 #--------------Name-------------------------#
 NAME = Push_swap
 
