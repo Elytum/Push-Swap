@@ -21,7 +21,6 @@ typedef struct		s_lst
 	struct s_lst	*next;
 }					t_lst;
 
-int					ft_isnum(char *str);
 int					ft_put_return(char *str, int val);
 int					ft_lowest(t_lst **l, int here);
 int					ft_atoi(const char *str, char *error);

@@ -12,15 +12,14 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes -g
+CFLAGS = -Wall -Wextra -Werror -I./includes -O3
 #--------------Name-------------------------#
 NAME = Push_swap
 
 #--------------Sources----------------------#
 FILES =	main.c			\
 		ft_lsttools.c	\
-		utils.c			\
-		other.c
+		utils.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = ./srcs
