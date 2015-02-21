@@ -14,22 +14,21 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include <stdio.h>
-static int			ft_cases(int ac, char **av)
+static int			ft_cases(int ac, char **av, int flags)
 {
 	int				var[3];
 	char			error;
 
 	error = 0;
 	if (ac <= 1)
-		return ((ac < 0 || (ft_atoi(*av++, &error) && error) ?
+		return ((ac < 0 || (ft_atoi(*av++, &error, flags) && error) ?
 							write(1, "Error\n", 6) : 0));
-	if (((var[0] = ft_atoi(*av++, &error)) && error) ||
-		((var[1] = ft_atoi(*av++, &error)) && error))
+	if (((var[0] = ft_atoi(*av++, &error, flags)) && error) ||
+		((var[1] = ft_atoi(*av++, &error, flags)) && error))
 		return (write(1, "Error\n", 6));
 	if (ac == 2)
 		return ((var[0] > var[1]) ? write(1, "sa\n", 3) : 0);
-	if (((var[2] = ft_atoi(*av++, &error)) && error))
+	if (((var[2] = ft_atoi(*av++, &error, flags)) && error))
 		return (write(1, "Error\n", 6));
 	return ((ft_order(var[0], var[1], var[2])) ? write(1, "\n", 1) : 0);
 }
@@ -111,84 +110,26 @@ static char			ft_pushback(t_lst **head, int v, char quit)
 	return (0);
 }
 
-int					ft_strncmp(char *a, char *b)
-{
-	while (*a && *a == *b)
-	{
-		a++;
-		b++;
-	}
-	return (!*a);
-}
-
-void				ft_testflags(int flags)
-{
-	return ;
-	dprintf(1, "Flag = %i\n", flags);
-	if (flags & 0b00000001)
-		write(1, "HELP\n", 5);
-	if (flags & 0b00000010)
-		write(1, "V\n", 2);
-	if (flags & 0b00000100)
-		write(1, "C\n", 2);
-	if (flags & 0b00001000)
-		write(1, "O\n", 2);
-}
-
-int					ft_getflags(int *ac, char ***av)
-{
-	int				flags;
-
-	if (!av || !*av || !**av)
-		return ((write(1, "Error\n", 6) == -42) - 1);
-	(*av)++;
-	flags = 0;
-	while (**av)
-	{
-		if (ft_strncmp("-help", **av))
-			flags |= 0b00000001;
-		else if (ft_strncmp("-visual", **av))
-			flags |= 1 << 1;
-		else if (ft_strncmp("-color", **av))
-			flags |= 1 << 2;
-		else if (ft_strncmp("-overflow", **av))
-			flags |= 1 << 3;
-		else
-			return (flags);
-		(*av)++;
-		(*ac)--;
-	}
-	return (flags);
-}
-
-void				ft_testav(int ac, char **av)
-{
-	char			**ptr;
-
-	// return ;
-	ptr = av;
-	dprintf(1, "ac = %i, av : ", ac);
-	while (*ptr)
-		dprintf(1, "\"%s\" ", *ptr++);
-	write(1, "\n", 1);
-}
 int					main(int ac, char **av)
 {
 	t_lst			*la;
 	int				len;
 	char			v;
+	int				flags;
 
-	ft_testflags(ft_getflags(&ac, &av));
-	ft_testav(ac, av);
+	flags = ft_getflags(&ac, &av);
+	// ft_testflags(flags);
+	// ft_testav(ac, av);
 	la = NULL;
 	len = 0;
 	v = 0;
 	if (ac <= 4)
-		return (ft_cases(ac - 1, av));
+		return (ft_cases(ac - 1, av, flags));
 	while (*av && ++len)
-		if (ft_pushback(&la, ft_atoi(*av++, &v), v))
+		if (ft_pushback(&la, ft_atoi(*av++, &v, flags), v))
 			return (write(1, "Error\n", 6));
-	if (ft_doubles(&la) || (v = ft_ordered(la)) == -1 || v == 1)
+	if ((!ISDOUBLES(flags) && ft_doubles(&la)) ||
+		(v = ft_ordered(la)) == -1 || v == 1)
 		return ((v == 1) ? 0 : write(1, "Error\n", 6));
 	ft_process(&la, len);
 	len -= 4;

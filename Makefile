@@ -19,7 +19,8 @@ NAME = Push_swap
 #--------------Sources----------------------#
 FILES =	main.c			\
 		ft_lsttools.c	\
-		utils.c
+		utils.c			\
+		debug.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = ./srcs
