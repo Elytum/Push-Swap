@@ -13,8 +13,6 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# define ABS(x) ((x) < 0 ? -(x) : (x))
-
 typedef struct		s_lst
 {
 	int				value;
@@ -23,7 +21,9 @@ typedef struct		s_lst
 
 int					ft_isnum(char *str);
 int					ft_put_return(char *str, int val);
+void				ft_putstrloop(char *str, int times, int len);
 int					ft_lowest(t_lst **l, int here);
+char				ft_pushback(t_lst **head, int v, char quit);
 int					ft_atoi(const char *str, char *error);
 int					ft_order(int a, int b, int c);
 int					ft_ordered(t_lst *head);

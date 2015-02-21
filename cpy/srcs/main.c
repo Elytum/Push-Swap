@@ -12,47 +12,88 @@
 
 #include "push_swap.h"
 #include <unistd.h>
-#include <stdlib.h>
 
 static int		ft_cases(int ac, char **av)
 {
 	int			var[3];
+	int			pos;
 	char		error;
 
-	if (ac < 1)
-		return ((ac < 0 || !(ft_isnum(*av))) ? write(1, "Error\n", 6) : 0);
-	if (((var[0] = ft_atoi(*av++, &error)) && error) ||
-		((var[1] = ft_atoi(*av++, &error)) && error))
+	error = 0;
+	if (ac == 0)
 		return (write(1, "Error\n", 6));
+	if (ac == 1)
+		return ((!(ft_isnum(*av))) ? write(1, "Error\n", 6) : 0);
+	pos = 0;
+	while (pos != ac)
+	{
+		var[pos++] = ft_atoi(*av++, &error);
+		if (!(ft_isnum(*av)))
+			return (write(1, "Error\n", 6));
+		if (error)
+			return (write(1, "Error\n", 6));
+	}
 	if (ac == 2)
-		return ((var[0] > var[1]) ? write(1, "sa\n", 3) : 0);
-	if ((var[2] = ft_atoi(*av++, &error) && error))
-		return (write(1, "Error\n", 6));
-	return ((ft_order(var[0], var[1], var[2])) ? write(1, "\n", 1) : 0);
+	{
+		if (var[0] > var[1])
+			return (write(1, "ra\n", 3));
+		else
+			return (0);
+	}
+	if (ft_order(var[0], var[1], var[2]))
+		write(1, "\n", 1);
+	return (1);
+}
+
+static void		ft_almost_finish(t_lst **la, int pos)
+{
+	int			var[3];
+
+	if (pos == 0)
+	{
+		var[0] = (*la)->value;
+		var[1] = (*la)->next->value;
+		var[2] = (*la)->next->next->value;
+	}
+	else if (pos == 1)
+	{
+		var[0] = (*la)->next->value;
+		var[1] = (*la)->next->next->value;
+		var[2] = (*la)->value;
+	}
+	else
+	{
+		var[0] = (*la)->next->next->value;
+		var[1] = (*la)->value;
+		var[2] = (*la)->next->value;
+	}
+	if (ft_order(var[0], var[1], var[2]))
+		write (1, " ", 1);
 }
 
 static void		ft_porcess_output(int pos, int tmp, int len)
 {
 	static int	a;
 	static int	b;
-	static char *str;
 
 	if (tmp > pos)
 	{
 		a = tmp - pos;
 		b = len - tmp + pos;
-		str = (a <= b) ? "ra " : "rra ";
+		if (a < b)
+			ft_putstrloop("ra ", a, 3);
+		else
+			ft_putstrloop("rra ", b, 4);
 	}
 	else
 	{
 		a = pos - tmp;
 		b = len - pos + tmp;
-		str = (a <= b) ? "rra " : "ra ";
+		if (a < b)
+			ft_putstrloop("rra ", a, 4);
+		else
+			ft_putstrloop("ra ", b, 3);
 	}
-	a = (a <= b) ? a : b;
-	b = (*(str + 1) == 'r') ? 4 : 3;
-	while (a--)
-		write(1, str, b);
 }
 
 static void		ft_process(t_lst **la, int len)
@@ -64,47 +105,15 @@ static void		ft_process(t_lst **la, int len)
 	while (len > 3)
 	{
 		tmp = ft_lowest(la, pos);
-		ft_porcess_output(pos, tmp, len--);
+		ft_porcess_output(pos, tmp, len);
 		pos = tmp;
 		write(1, "pb ", 3);
+		len--;
 		if (pos >= len)
 			pos -= len;
 	}
-	if (len != 3 || tmp > 3)
-		return ;
-	if (pos == 0)
-		tmp = ft_order((*la)->value, (*la)->next->value, (*la)->next->next->value);
-	else if (pos == 1)
-		tmp = ft_order((*la)->next->value, (*la)->next->next->value, (*la)->value);
-	else
-		tmp = ft_order((*la)->next->next->value, (*la)->value, (*la)->next->value);
-	if (tmp)
-		write (1, " ", 1);
-}
-
-static char			ft_pushback(t_lst **head, int v, char quit)
-{
-	static t_lst	*tmp;
-	static t_lst	*ptr;
-
-	if (quit)
-		return (quit);
-	if (!(tmp = (t_lst *)malloc(sizeof(t_lst))))
-		return (quit);
-	tmp->value = v;
-	tmp->next = NULL;
-	if (!head)
-		return (1);
-	else if (!*head)
-		*head = tmp;
-	else
-	{
-		ptr = *head;
-		while (ptr->next)
-			ptr = ptr->next;
-		ptr->next = tmp;
-	}
-	return (0);
+	if (len == 3)
+		ft_almost_finish(la, pos);
 }
 
 int				main(int ac, char **av)
@@ -130,8 +139,6 @@ int				main(int ac, char **av)
 	if (ft_doubles(&la) || (v = ft_ordered(la)) == -1 || v == 1)
 		return ((v == 1) ? 0 : write(1, "Error\n", 6));
 	ft_process(&la, len);
-	len -= 4;
-	while (len--)
-		write(1, "pa ", 3);
+	ft_putstrloop("pa ", len - 4, 3);
 	return (write(1, "pa\n", 3));
 }

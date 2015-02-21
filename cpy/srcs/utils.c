@@ -64,26 +64,10 @@ int						ft_isnum(char *str)
 	return (1);
 }
 
-int				ft_doubles(t_lst **la)
+void					ft_putstrloop(char *str, int times, int len)
 {
-	t_lst		*head;
-	t_lst		*ptr;
-
-	if (!la || !*la)
-		return (0);
-	head = *la;
-	while (head)
-	{
-		ptr = head->next;
-		while (ptr)
-		{
-			if (head->value == ptr->value)
-				return (1);
-			ptr = ptr->next;
-		}
-		head = head->next;
-	}
-	return (0);
+	while (times--)
+		write(1, str, len);
 }
 
 int						ft_atoi(const char *str, char *error)
@@ -91,20 +75,20 @@ int						ft_atoi(const char *str, char *error)
 	static unsigned int	value;
 	static int			sign;
 
-	if (!str)
-		return ((*error = 1));
 	sign = 1;
+	if (!str)
+		return (0);
 	if (*str == '+')
 		str++;
 	else if (*str == '-' && str++)
 		sign = -1;
-	if (!(*str >= '0' && *str <= '9'))
-		return ((*error = 1));
 	value = 0;
 	while (str[0] && (*str >= '0' && *str <= '9'))
-		if ((value = value * 10 + *str++ - '0') > 2147483647)
+	{
+		value = value * 10 + str[0] - '0';
+		str++;
+		if (value > 2147483647)
 			return ((*error = 1));
-	if (*str)
-		return ((*error = 1));
+	}
 	return (value * sign);
 }

@@ -13,6 +13,44 @@
 #include "push_swap.h"
 #include <stdlib.h>
 
+static	t_lst		*ft_newlst(int v)
+{
+	static t_lst	*ptr;
+
+	if (!(ptr = (t_lst *)malloc(sizeof(t_lst))))
+		return (NULL);
+	ptr->value = v;
+	ptr->next = NULL;
+	return (ptr);
+}
+
+char				ft_pushback(t_lst **head, int v, char quit)
+{
+	static t_lst	*tmp;
+	static t_lst	*ptr;
+
+	if (quit)
+		return (quit);
+	tmp = ft_newlst(v);
+	if (!head)
+		return (1);
+	else if (!*head)
+		*head = tmp;
+	else
+	{
+		ptr = *head;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = tmp;
+	}
+	return (0);
+}
+
+static int			ft_abs(int v)
+{
+	return ((v < 0) ? -v : v);
+}
+
 static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
 {
 	static int		i;
@@ -27,7 +65,7 @@ static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
 	while (ptr->next)
 	{
 		if (ptr->next->value < value || (ptr->next->value == value &&
-			(ABS(here - i - 1) < ABS(*pos - here))))
+			(ft_abs(here - i - 1) < ft_abs(*pos - here))))
 		{
 			value = ptr->next->value;
 			*bl = ptr;
