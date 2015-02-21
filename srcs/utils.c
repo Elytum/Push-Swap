@@ -16,6 +16,7 @@
 int						ft_atoi(const char *str, char *error, int flags)
 {
 	static unsigned int	value;
+	static unsigned int	max;
 	static int			sign;
 
 	if (!str)
@@ -25,11 +26,12 @@ int						ft_atoi(const char *str, char *error, int flags)
 		str++;
 	else if (*str == '-' && str++)
 		sign = -1;
+	max = (sign == 1) ? 2147483647 : 2147483648;
 	if (!(*str >= '0' && *str <= '9'))
 		return ((*error = 1));
 	value = 0;
 	while (*str && (*str >= '0' && *str <= '9'))
-		if (((value = value * 10 + *str++ - '0') > 2147483647) &&
+		if (((value = value * 10 + *str++ - '0') > max) &&
 			!(ISOVERFLOW(flags)))
 			return ((*error = 1));
 	if (*str)
