@@ -24,13 +24,15 @@ static int			ft_cases(int ac, char **av, int flags)
 		return ((ac < 0 || (ft_atoi(*av++, &error, flags) && error) ?
 							write(1, "Error\n", 6) : 0));
 	if (((var[0] = ft_atoi(*av++, &error, flags)) && error) ||
-		((var[1] = ft_atoi(*av++, &error, flags)) && error))
+		((var[1] = ft_atoi(*av++, &error, flags)) && error) ||
+		var[0] == var[1])
 		return (write(1, "Error\n", 6));
 	if (ac == 2)
 		return ((var[0] > var[1]) ? write(1, "sa\n", 3) : 0);
-	if (((var[2] = ft_atoi(*av++, &error, flags)) && error))
+	if (((var[2] = ft_atoi(*av++, &error, flags)) && error) ||
+		var[0] == var[2] || var[1] == var[2])
 		return (write(1, "Error\n", 6));
-	return ((ft_order(var[0], var[1], var[2])) ? write(1, "\n", 1) : 0);
+	return ((ft_order(var[2], var[1], var[0])) ? write(1, "\n", 1) : 0);
 }
 
 static void			ft_porcess_output(int pos, int tmp, int len)
@@ -57,16 +59,16 @@ static void			ft_porcess_output(int pos, int tmp, int len)
 		write(1, str, b);
 }
 
-static void			ft_process(t_lst **la, int len)
+static void			ft_process(t_lst **la, t_lst **lb, int len, char min)
 {
 	int				tmp;
 	int				pos;
 
 	pos = 0;
 	tmp = 0;
-	while (len > 3)
+	while (len > min)
 	{
-		tmp = ft_lowest(la, pos);
+		tmp = ft_lowest(la, lb, pos);
 		ft_porcess_output(pos, tmp, len--);
 		pos = tmp;
 		write(1, "pb ", 3);
@@ -76,16 +78,16 @@ static void			ft_process(t_lst **la, int len)
 	if (len != 3 || tmp > 3)
 		return ;
 	if (pos == 0)
-		tmp = ft_order((*la)->value, (*la)->next->value, (*la)->next->next->value);
+		tmp = ft_order((*la)->value, (*la)->ne->value, (*la)->ne->ne->value);
 	else if (pos == 1)
-		tmp = ft_order((*la)->next->value, (*la)->next->next->value, (*la)->value);
+		tmp = ft_order((*la)->ne->value, (*la)->ne->ne->value, (*la)->value);
 	else
-		tmp = ft_order((*la)->next->next->value, (*la)->value, (*la)->next->value);
+		tmp = ft_order((*la)->ne->ne->value, (*la)->value, (*la)->ne->value);
 	if (tmp)
 		write (1, " ", 1);
 }
 
-static char			ft_pushback(t_lst **head, int v, char quit)
+static char			ft_push(t_lst **head, int v, char quit)
 {
 	static t_lst	*tmp;
 	static t_lst	*ptr;
@@ -95,7 +97,7 @@ static char			ft_pushback(t_lst **head, int v, char quit)
 	if (!(tmp = (t_lst *)malloc(sizeof(t_lst))))
 		return (quit);
 	tmp->value = v;
-	tmp->next = NULL;
+	tmp->ne = NULL;
 	if (!head)
 		return (1);
 	else if (!*head)
@@ -103,9 +105,9 @@ static char			ft_pushback(t_lst **head, int v, char quit)
 	else
 	{
 		ptr = *head;
-		while (ptr->next)
-			ptr = ptr->next;
-		ptr->next = tmp;
+		while (ptr->ne)
+			ptr = ptr->ne;
+		ptr->ne = tmp;
 	}
 	return (0);
 }
@@ -113,27 +115,28 @@ static char			ft_pushback(t_lst **head, int v, char quit)
 int					main(int ac, char **av)
 {
 	t_lst			*la;
+	t_lst			*lb;
 	int				len;
 	char			v;
 	int				flags;
 
 	flags = ft_getflags(&ac, &av);
-	// ft_testflags(flags);
-	// ft_testav(ac, av);
 	la = NULL;
+	lb = NULL;
 	len = 0;
 	v = 0;
 	if (ac <= 4)
 		return (ft_cases(ac - 1, av, flags));
 	while (*av && ++len)
-		if (ft_pushback(&la, ft_atoi(*av++, &v, flags), v))
+		if (ft_push(&la, ft_atoi(*av++, &v, flags), v))
 			return (write(1, "Error\n", 6));
 	if ((!ISDOUBLES(flags) && ft_doubles(&la)) ||
 		(v = ft_ordered(la)) == -1 || v == 1)
 		return ((v == 1) ? 0 : write(1, "Error\n", 6));
-	ft_process(&la, len);
-	len -= 4;
-	while (len--)
+	ft_process(&la, &lb, len, ((ISCOLOR(flags) || ISVISUAL(flags)) ? 0 : 3));
+	if (ISCOLOR(flags) || ISVISUAL(flags))
+		return (ft_endlb(&la, &lb, flags));
+	while (len-- - 4)
 		write(1, "pa ", 3);
 	return (write(1, "pa\n", 3));
 }

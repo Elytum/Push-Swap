@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lsttools.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/02/18 02:16:35 by achazal           #+#    #+#             */
+/*   Updated: 2015/02/18 02:16:38 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 #include <unistd.h>
@@ -27,4 +39,67 @@ void				ft_testav(int ac, char **av)
 	while (*ptr)
 		dprintf(1, "\"%s\" ", *ptr++);
 	write(1, "\n", 1);
+}
+
+void				ft_putnbr(int v)
+{
+	char			c;
+
+	if (v == -2147483648)
+	{
+		write(1, "-2147483648", 11);
+		return ;
+	}
+	if (v < 0)
+	{
+		v *= -1;
+		write(1, "-", 1);
+	}
+	if (v >= 10)
+	{
+		ft_putnbr(v / 10);
+		c = v % 10 + '0';
+		write(1, &c, 1);
+	}
+	else
+	{
+		c = v + '0';
+		write(1, &c, 1);
+	}
+}
+
+void				ft_putlst(t_lst *l)
+{
+	t_lst			*ptr;
+
+	if (!l)
+	{
+		write(1, "ERROR\n", 6);
+		return ;
+	}
+	write(1, "{ ", 2);
+	ptr = l;
+	while (ptr)
+	{
+		ft_putnbr(ptr->value);
+		(ptr->ne) ? write(1, ", ", 2) : 0;
+		ptr = ptr->ne;
+	}
+	write(1, " }\n", 3);
+}
+
+void				ft_putstep(t_lst *la, t_lst *lb, char *move, int flags)
+{
+	char			*ptr;
+
+	ptr = move;
+	while (*ptr)
+		ptr++;
+	write(1, move, ptr - move);
+	write(1, "\n\nla : ", 7);
+	ft_putlst(la);
+	write(1, "lb : ", 5);
+	ft_putlst(lb);
+	return ;
+	flags++;
 }

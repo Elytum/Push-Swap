@@ -13,8 +13,9 @@
 #include "push_swap.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
-int						ft_order(int a, int b, int c)
+int					ft_order(int a, int b, int c)
 {
 	if (a <= b && b <= c)
 		return (0);
@@ -31,42 +32,20 @@ int						ft_order(int a, int b, int c)
 	return (write(1, "Error", 5));
 }
 
-int						ft_ordered(t_lst *head)
+int					ft_ordered(t_lst *head)
 {
-	t_lst				*ptr;
+	t_lst			*ptr;
 
 	if (!head)
 		return (-1);
 	ptr = head;
-	while (ptr->next)
+	while (ptr->ne)
 	{
-		if (ptr->value > ptr->next->value)
+		if (ptr->value < ptr->ne->value)
 			return (0);
-		ptr = ptr->next;
+		ptr = ptr->ne;
 	}
 	return (1);
-}
-
-int						ft_doubles(t_lst **la)
-{
-	t_lst				*head;
-	t_lst				*ptr;
-
-	if (!la || !*la)
-		return (0);
-	head = *la;
-	while (head)
-	{
-		ptr = head->next;
-		while (ptr)
-		{
-			if (head->value == ptr->value)
-				return (1);
-			ptr = ptr->next;
-		}
-		head = head->next;
-	}
-	return (0);
 }
 
 static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
@@ -80,37 +59,44 @@ static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
 	*bl = NULL;
 	i = 0;
 	*pos = i;
-	while (ptr->next)
+	while (ptr->ne)
 	{
-		if (ptr->next->value < value || (ptr->next->value == value &&
+		if (ptr->ne->value < value || (ptr->ne->value == value &&
 			(ABS(here - i - 1) < ABS(*pos - here))))
 		{
-			value = ptr->next->value;
+			value = ptr->ne->value;
 			*bl = ptr;
 			*pos = i + 1;
 		}
-		ptr = ptr->next;
+		ptr = ptr->ne;
 		i++;
 	}
 }
 
-int					ft_lowest(t_lst **l, int here)
+int					ft_lowest(t_lst **la, t_lst **lb, int here)
 {
 	static t_lst	*before_lowest;
 	static t_lst	*ptr;
 	static int		pos;
 
-	ft_get_before_lowest(l, &before_lowest, &pos, here);
+	ft_get_before_lowest(la, &before_lowest, &pos, here);
 	if (before_lowest)
 	{
-		ptr = before_lowest->next;
-		before_lowest->next = ptr->next;
+		ptr = before_lowest->ne;
+		before_lowest->ne = ptr->ne;
 	}
 	else
 	{
-		ptr = *l;
-		*l = ptr->next;
+		ptr = *la;
+		*la = ptr->ne;
 	}
-	free(ptr);
+	ptr->ne = NULL;
+	if (lb && !*lb)
+		*lb = ptr;
+	else if (lb)
+	{
+		ptr->ne = *lb;
+		*lb = ptr;
+	}
 	return (pos);
 }

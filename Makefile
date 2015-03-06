@@ -14,7 +14,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./includes -O3
 #--------------Name-------------------------#
-NAME = Push_swap
+NAME = push_swap
 
 #--------------Sources----------------------#
 FILES =	main.c			\

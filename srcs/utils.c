@@ -13,6 +13,55 @@
 #include "push_swap.h"
 #include <unistd.h>
 
+int					ft_endlb(t_lst **la, t_lst **lb, int flags)
+{
+	t_lst			*ptr;
+	t_lst			*ne;
+
+	if (!la || !*la || !lb || !*lb)
+		return (-1);
+	ptr = *lb;
+	while (ptr)
+	{
+		ne = ptr->ne;
+		write(1, "\npa \n", 5);
+		write(1, "la : ", 5);
+		ft_putlst(*la);
+		write(1, "lb : ", 5);
+		ft_putlst(ptr);
+		ptr->ne = *la;
+		*la = ptr;
+		ptr = ne;
+	}
+	write(1, "\npa\n", 4);
+	write(1, "la : ", 5);
+	ft_putlst(*la);
+	write(1, "lb : { }\n", 9);
+	return (flags);
+}
+
+int						ft_doubles(t_lst **la)
+{
+	t_lst				*head;
+	t_lst				*ptr;
+
+	if (!la || !*la)
+		return (0);
+	head = *la;
+	while (head)
+	{
+		ptr = head->ne;
+		while (ptr)
+		{
+			if (head->value == ptr->value)
+				return (1);
+			ptr = ptr->ne;
+		}
+		head = head->ne;
+	}
+	return (0);
+}
+
 int						ft_atoi(const char *str, char *error, int flags)
 {
 	static unsigned int	value;
@@ -64,10 +113,6 @@ int					ft_getflags(int *ac, char ***av)
 	{
 		if (ft_strncmp("-help", **av))
 			flags |= HELP;
-		else if (ft_strncmp("-visual", **av))
-			flags |= VISUAL;
-		else if (ft_strncmp("-color", **av))
-			flags |= COLOR;
 		else if (ft_strncmp("-overflow", **av))
 			flags |= OVERFLOW;
 		else if (ft_strncmp("-doubles", **av))
