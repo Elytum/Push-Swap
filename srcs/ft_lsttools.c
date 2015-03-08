@@ -13,9 +13,8 @@
 #include "push_swap.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-int					ft_order(int a, int b, int c)
+int						ft_order(int a, int b, int c)
 {
 	if (a <= b && b <= c)
 		return (0);
@@ -32,27 +31,59 @@ int					ft_order(int a, int b, int c)
 	return (write(1, "Error", 5));
 }
 
-int					ft_ordered(t_lst *head)
+int						ft_atoi(const char *str, char *error)
 {
-	t_lst			*ptr;
+	static unsigned int	value;
+	static unsigned int	max;
+	static int			sign;
 
-	if (!head)
-		return (-1);
-	ptr = head;
-	while (ptr->ne)
-	{
-		if (ptr->value < ptr->ne->value)
-			return (0);
-		ptr = ptr->ne;
-	}
-	return (1);
+	if (!str)
+		return ((*error = 1));
+	sign = 1;
+	if (*str == '+')
+		str++;
+	else if (*str == '-' && str++)
+		sign = -1;
+	max = (sign == 1) ? 2147483647 : 2147483648;
+	if (!(*str >= '0' && *str <= '9'))
+		return ((*error = 1));
+	value = 0;
+	while (*str && (*str >= '0' && *str <= '9'))
+		if (((value = value * 10 + *str++ - '0') > max))
+			return ((*error = 1));
+	if (*str)
+		return ((*error = 1));
+	return (value * sign);
 }
 
-static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
+int						ft_doubles(t_lst **la)
 {
-	static int		i;
-	static int		value;
-	static t_lst	*ptr;
+	t_lst				*head;
+	t_lst				*ptr;
+
+	if (!la || !*la)
+		return (0);
+	head = *la;
+	while (head)
+	{
+		ptr = head->ne;
+		while (ptr)
+		{
+			if (head->value == ptr->value)
+				return (1);
+			ptr = ptr->ne;
+		}
+		head = head->ne;
+	}
+	return (0);
+}
+
+static	void			ft_get_before_lowest(t_lst **l, t_lst **bl,
+											int *pos, int here)
+{
+	int					i;
+	int					value;
+	t_lst				*ptr;
 
 	ptr = *l;
 	value = ptr->value;
@@ -73,13 +104,13 @@ static	void		ft_get_before_lowest(t_lst **l, t_lst **bl, int *pos, int here)
 	}
 }
 
-int					ft_lowest(t_lst **la, t_lst **lb, int here)
+int						ft_lowest(t_lst **l, int here)
 {
-	static t_lst	*before_lowest;
-	static t_lst	*ptr;
-	static int		pos;
+	t_lst				*before_lowest;
+	t_lst				*ptr;
+	int					pos;
 
-	ft_get_before_lowest(la, &before_lowest, &pos, here);
+	ft_get_before_lowest(l, &before_lowest, &pos, here);
 	if (before_lowest)
 	{
 		ptr = before_lowest->ne;
@@ -87,16 +118,9 @@ int					ft_lowest(t_lst **la, t_lst **lb, int here)
 	}
 	else
 	{
-		ptr = *la;
-		*la = ptr->ne;
+		ptr = *l;
+		*l = ptr->ne;
 	}
-	ptr->ne = NULL;
-	if (lb && !*lb)
-		*lb = ptr;
-	else if (lb)
-	{
-		ptr->ne = *lb;
-		*lb = ptr;
-	}
+	free(ptr);
 	return (pos);
 }

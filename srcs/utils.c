@@ -13,114 +13,70 @@
 #include "push_swap.h"
 #include <unistd.h>
 
-int					ft_endlb(t_lst **la, t_lst **lb, int flags)
+int						ft_check1(t_lst *head)
 {
-	t_lst			*ptr;
-	t_lst			*ne;
-
-	if (!la || !*la || !lb || !*lb)
-		return (-1);
-	ptr = *lb;
-	while (ptr)
-	{
-		ne = ptr->ne;
-		write(1, "\npa \n", 5);
-		write(1, "la : ", 5);
-		ft_putlst(*la);
-		write(1, "lb : ", 5);
-		ft_putlst(ptr);
-		ptr->ne = *la;
-		*la = ptr;
-		ptr = ne;
-	}
-	write(1, "\npa\n", 4);
-	write(1, "la : ", 5);
-	ft_putlst(*la);
-	write(1, "lb : { }\n", 9);
-	return (flags);
-}
-
-int						ft_doubles(t_lst **la)
-{
-	t_lst				*head;
+	int					save1;
+	int					save2;
 	t_lst				*ptr;
 
-	if (!la || !*la)
+	save1 = head->value;
+	save2 = head->ne->value;
+	ptr = head->ne->ne;
+	if (!(ptr->value < ptr->ne->value) || (save1 < save2) ||
+		!(save1 < ptr->value) || !(save2 < ptr->value))
 		return (0);
-	head = *la;
-	while (head)
+	while (ptr->ne)
 	{
-		ptr = head->ne;
-		while (ptr)
-		{
-			if (head->value == ptr->value)
-				return (1);
-			ptr = ptr->ne;
-		}
-		head = head->ne;
+		if (((ptr->value < ptr->ne->value)) ||
+			((save1 < ptr->ne->value)) ||
+			((save2 < ptr->ne->value)))
+			return (0);
+		ptr = ptr->ne;
 	}
-	return (0);
+	write(1, "sa\n", 3);
+	return (1);
 }
 
-int						ft_atoi(const char *str, char *error, int flags)
+int						ft_check2(t_lst *head)
 {
-	static unsigned int	value;
-	static unsigned int	max;
-	static int			sign;
+	int					save1;
+	int					save2;
+	t_lst				*ptr;
 
-	if (!str)
-		return ((*error = 1));
-	sign = 1;
-	if (*str == '+')
-		str++;
-	else if (*str == '-' && str++)
-		sign = -1;
-	max = (sign == 1) ? 2147483647 : 2147483648;
-	if (!(*str >= '0' && *str <= '9'))
-		return ((*error = 1));
-	value = 0;
-	while (*str && (*str >= '0' && *str <= '9'))
-		if (((value = value * 10 + *str++ - '0') > max) &&
-			!(ISOVERFLOW(flags)))
-			return ((*error = 1));
-	if (*str)
-		return ((*error = 1));
-	return (value * sign);
-}
-
-int					ft_strncmp(char *a, char *b)
-{
-	while (*a && *a == *b)
+	ptr = head;
+	while (ptr->ne->ne)
+		ptr = ptr->ne;
+	save1 = ptr->value;
+	save2 = ptr->ne->value;
+	ptr = head;
+	if (!(ptr->value < ptr->ne->value) || (save1 < save2))
+		return (0);
+	while (ptr->ne->ne->ne)
 	{
-		a++;
-		b++;
+		if (((ptr->value < ptr->ne->value)) ||
+			((save1 > ptr->ne->value)) ||
+			((save2 > ptr->ne->value)))
+			return (0);
+		ptr = ptr->ne;
 	}
-	return (!*a);
+	write(1, (REV_RU) ? "ra ra sa rra rra\n" : "rra rra sa ra ra\n", 17);
+	return (1);
 }
 
-int					ft_getflags(int *ac, char ***av)
+int						ft_ordered(t_lst *head)
 {
-	int				flags;
+	t_lst		*ptr;
 
-	if (!av || !*av || !**av)
-	{
-		write(1, "Error\n", 6);
+	if (!head)
 		return (-1);
-	}
-	(*av)++;
-	flags = 0;
-	while (**av)
+	if (ft_check1(head) || ft_check2(head))
+		return (1);
+	ptr = head;
+	while (ptr->ne)
 	{
-		if (ft_strncmp("-help", **av))
-			flags |= HELP;
-		else if (ft_strncmp("-overflow", **av))
-			flags |= OVERFLOW;
-		else if (ft_strncmp("-doubles", **av))
-			flags |= DOUBLES;
-		else
-			return (flags);
-		(*av)++;
-		(*ac)--;
+		if (ptr->value > ptr->ne->value)
+			return (0);
+		ptr = ptr->ne;
 	}
-	return (flags);
+	return (1);
 }

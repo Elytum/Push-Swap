@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: achazal <achazal@student.42.fr>            +#+  +:+       +#+         #
+#    By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/11/03 11:54:29 by achazal           #+#    #+#              #
-#    Updated: 2014/12/13 12:55:35 by achazal          ###   ########.fr        #
+#    Created: 2014/11/03 11:54:29 by pfournet          #+#    #+#              #
+#    Updated: 2014/12/13 12:55:35 by pfournet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,7 @@ NAME = push_swap
 #--------------Sources----------------------#
 FILES =	main.c			\
 		ft_lsttools.c	\
-		utils.c			\
-		debug.c
+		utils.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = ./srcs
@@ -43,3 +42,5 @@ fclean: clean
 		/bin/rm -Rf $(NAME)
 
 re: fclean all
+
+.PHONY: all, fclean, clean, re 
