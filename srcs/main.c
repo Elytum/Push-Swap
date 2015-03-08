@@ -131,7 +131,7 @@ int					main(int ac, char **av)
 	while (*av && ++len)
 		if (ft_pushback(&la, ft_atoi(*av++, &v), v))
 			return (write(1, "Error\n", 6));
-	if (ft_doubles(&la) || (v = ft_ordered(la)) == -1 || v == 1)
+	if (ft_doubles(&la) || (v = ft_ordered(la, len)) == -1 || v == 1)
 		return ((v == 1) ? 0 : write(1, "Error\n", 6));
 	if (v == 1)
 		return (0);

@@ -28,7 +28,7 @@ void				ft_putstrloop(char *str, int times, int len);
 int					ft_lowest(t_lst **l, int here);
 int					ft_atoi(const char *str, char *error);
 int					ft_order(int a, int b, int c);
-int					ft_ordered(t_lst *head);
+int					ft_ordered(t_lst *head, int len);
 int					ft_doubles(t_lst **la);
 
 #endif
