@@ -32,7 +32,7 @@ static int			ft_cases(int ac, char **av)
 	if (((var[2] = ft_atoi(*av++, &error)) && error) ||
 		var[0] == var[2] || var[1] == var[2])
 		return (write(1, "Error\n", 6));
-	if (REV_RU)
+	if (!REV_RU)
 		return ((ft_order(var[2], var[1], var[0])) ? write(1, "\n", 1) : 0);
 	return ((ft_order(var[0], var[1], var[2])) ? write(1, "\n", 1) : 0);
 }

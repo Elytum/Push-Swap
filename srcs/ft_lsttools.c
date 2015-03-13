@@ -33,8 +33,8 @@ int						ft_order(int a, int b, int c)
 
 int						ft_atoi(const char *str, char *error)
 {
-	static unsigned int	value;
-	static unsigned int	max;
+	static double 		value;
+	static double 		max;
 	static int			sign;
 
 	if (!str)

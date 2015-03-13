@@ -12,12 +12,14 @@
 
 #include "push_swap.h"
 #include <unistd.h>
+#include <stdio.h>
 
 int						ft_check1(t_lst *head)
 {
 	int					save1;
 	int					save2;
 	t_lst				*ptr;
+
 
 	save1 = head->value;
 	save2 = head->ne->value;
@@ -27,9 +29,9 @@ int						ft_check1(t_lst *head)
 		return (0);
 	while (ptr->ne)
 	{
-		if ((ptr->value < ptr->ne->value) ||
-			(save1 < ptr->ne->value) ||
-			(save2 < ptr->ne->value))
+		if ((ptr->value > ptr->ne->value) ||
+			(save1 > ptr->ne->value) ||
+			(save2 > ptr->ne->value))
 			return (0);
 		ptr = ptr->ne;
 	}
@@ -49,13 +51,13 @@ int						ft_check2(t_lst *head)
 	save1 = ptr->value;
 	save2 = ptr->ne->value;
 	ptr = head;
-	if (!(ptr->value < ptr->ne->value) || !(save1 < save2))
+	if (!(ptr->value < ptr->ne->value) || save1 < save2)
 		return (0);
 	while (ptr->ne->ne->ne)
 	{
-		if ((ptr->value < ptr->ne->value) ||
-			(save1 > ptr->ne->value) ||
-			(save2 > ptr->ne->value))
+		if ((ptr->value > ptr->ne->value) ||
+			(save1 < ptr->ne->value) ||
+			(save2 < ptr->ne->value))
 			return (0);
 		ptr = ptr->ne;
 	}
